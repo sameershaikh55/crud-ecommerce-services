@@ -63,3 +63,19 @@ exports.getUserData = catchAsyncErrors(async (req, res, next) => {
     user: res.user,
   });
 });
+
+// CHANGES AND UPDATE USER PROFILE PICTURE
+exports.changeUserImage = catchAsyncErrors(async (req, res, next) => {
+  const gettingRecord = await RegistrationModel.findByIdAndUpdate(
+    res.user._id,
+    req.body,
+    {
+      new: true,
+    }
+  );
+
+  res.status(200).json({
+    success: true,
+    user: gettingRecord,
+  });
+});

@@ -3,6 +3,7 @@ const { Schema, model } = mongoose;
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
 var jwt = require("jsonwebtoken");
+const { avatar } = require("../../public/images/avatar");
 
 const usersSchema = new Schema({
   fname: {
@@ -38,6 +39,10 @@ const usersSchema = new Schema({
     trim: true,
     minLength: [8, "Password should be greater than 8 characters"],
     select: false,
+  },
+  picture: {
+    type: String,
+    default: avatar,
   },
   createdAt: {
     type: Date,
