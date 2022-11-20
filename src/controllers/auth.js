@@ -3,6 +3,7 @@ const ErrorHandler = require("../utils/errorhandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const RegistrationModel = require("../models/registration");
 const sendToken = require("../utils/jwtToken");
+const sendResponse = require("../utils/sendResponse");
 
 exports.register = catchAsyncErrors(async (req, res, next) => {
   const { fname, lname, email, phone, password } = req.body;
@@ -16,12 +17,8 @@ exports.register = catchAsyncErrors(async (req, res, next) => {
   if (gettingRecord) {
     return next(new ErrorHandler("Email already exist", 422));
   } else {
-    try {
-      const userData = await RegistrationModel.create(req.body);
-      sendToken(userData, 201, res);
-    } catch (err) {
-      return next(new ErrorHandler(err.message, 500));
-    }
+    const userData = await RegistrationModel.create(req.body);
+    sendToken(userData, 201, res);
   }
 });
 
@@ -50,18 +47,12 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
     httpOnly: true,
   });
 
-  res.status(200).json({
-    status: true,
-    message: "logged out successfully",
-  });
+  sendResponse(true, 200, "message", "logged out successfully", res);
 });
 
 // GET USER DATA WITH TOKEN AUTHENTICATION
 exports.getUserData = catchAsyncErrors(async (req, res, next) => {
-  res.status(200).send({
-    success: true,
-    user: res.user,
-  });
+  sendResponse(true, 200, "user", res.user, res);
 });
 
 // CHANGES AND UPDATE USER PROFILE PICTURE
@@ -74,8 +65,5 @@ exports.changeUserImage = catchAsyncErrors(async (req, res, next) => {
     }
   );
 
-  res.status(200).json({
-    success: true,
-    user: gettingRecord,
-  });
+  sendResponse(true, 200, "user", gettingRecord, res);
 });

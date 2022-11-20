@@ -20,13 +20,16 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
+// ERROR HANDLER
 const errorMiddleware = require("./middleware/error");
 
 // ROUTE IMPORT
 const auth = require("./routes/auth");
+const product = require("./routes/product");
 
 // CONTROLLERS
 app.use("/api", auth);
+app.use("/api", product);
 
 // Middleware for Errors
 app.use(errorMiddleware);
