@@ -13,8 +13,8 @@ const productSchema = new Schema({
     type: String,
     trim: true,
     required: [true, "Please Enter the description"],
-    maxLength: [100, "Description cannot exceed 100 characters"],
-    minLength: [20, "Description should have more than 20 characters"],
+    maxLength: [1000, "Description cannot exceed 1000 characters"],
+    minLength: [100, "Description should have more than 100 characters"],
   },
   price: {
     type: Number,
